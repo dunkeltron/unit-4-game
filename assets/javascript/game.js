@@ -1,28 +1,17 @@
-var obiWan;
-var darthMaul;
-var darthSidious;
-var lukeSkywalker;
-var characterArray;
-var yourChar;
-var enemyChar;
-var numCharRemaining;
-var phase = 0;
-
-
 $(document).ready(function () {
     startGame();
 
 });
-function startGame(){
+function startGame() {
     obiWan = { name: "Obi-Wan Kenobi", hP: 120, iAp: 8, aP: 8, cAP: 12, inPlay: false, image: "obi-wan" };
     darthMaul = { name: "Darth Maul", hP: 180, iAp: 4, aP: 4, cAP: 25, inPlay: false, image: "maul" };
     darthSidious = { name: "Darth Sidious", hP: 150, iAp: 6, aP: 6, cAP: 20, inPlay: false, image: "sidious" };
-    lukeSkywalker = { name: "Luke Skywalker", hP: 100, iAp: 100, aP: 100, cAP: 5, inPlay: false, image: "luke" };
+    lukeSkywalker = { name: "Luke Skywalker", hP: 100, iAp: 50, aP: 50, cAP: 5, inPlay: false, image: "luke" };
     characterArray = [obiWan, darthMaul, darthSidious, lukeSkywalker];
     numCharRemaining = characterArray.length;
-    imgSrc = '<img src=assets/img/' + lukeSkywalker.image + '.jpg>';  
-    
+    phase = 0;
 
+    
     availableChoices();
     $(".luke").click(function () {
         console.log("luke");
@@ -58,12 +47,13 @@ function startGame(){
         }
 
     });
-        $("#fight-Button").click(function () {
-            console.log(phase);
-            if (phase === 2) {
-                fight();
-            }
-        })
+    $("#fight-Button").click(function () {
+        console.log(phase);
+        if (phase === 2) {
+            fight();
+        }
+    })
+    
 
 }
 function availableChoices() {
@@ -71,20 +61,24 @@ function availableChoices() {
     characterArray.forEach(function (element) {
         var newBox = $("<div>");
         var nameBox = $("<div>");
-        var picBox=$("<div>");
-        var hpBox= $("<div>");
+        var picBox = $("<div>");
+        var picSrc=$("<img/>").attr('src',"assets/img/"+element.image+".jpg");
+        picSrc.attr("title",element.name);
+        picSrc.attr("alt","picture of "+element.name);
+        picSrc.width('80px');
+        picSrc.height('50px');
+        var hpBox = $("<div>");
         nameBox.text(element.name);
         nameBox.addClass("name-box");
-        
-        picBox.html("<img src=../img/"+element.image+".jpg");
+
+        picBox.append(picSrc);
         picBox.addClass("picture-box");
 
-        hpBox.text("HP = "+element.hP);
+        hpBox.text("HP = " + element.hP);
         hpBox.addClass("hp-box");
         newBox.addClass(element.image);
-        //newBox.innerHtml("<img src=../img/"+element.image+".jpg");
         newBox.attr('id', "selection-Zone");
-        newBox.append(nameBox);            
+        newBox.append(nameBox);
         newBox.append(picBox);
         newBox.append(hpBox);
         $("#placeholder-Zone").append(newBox);
@@ -92,8 +86,13 @@ function availableChoices() {
 }
 function reset() {
     $("#your-Character-Box").empty();
-    $("#defender-Box-Area").empty();
+    
     $("#fight-Button").unbind("click");
+    $("#enemy-Character-Box").empty();
+    $(".restart-button").unbind("click");
+    $("#restart-Button-Zone").empty();
+    $("#combat-Text-One").empty();
+    $("#combat-Text-Two").empty();
     startGame();
 }
 function moveChar(c1) {
@@ -113,7 +112,7 @@ function moveRemainder() {
             var charClass = element.image;
             console.log(element.name + " is inPlay:" + element.inPlay);
             $("." + charClass).attr('id', "available-Zone");
-            $("." + charClass).appendTo("#enemy-Character-Box-Area");
+            $("." + charClass).appendTo("#enemy-Character-Box");
         }
     })
 }
@@ -133,6 +132,8 @@ function chooseChar(c1) {
 // }
 //sets enemyChar to chosen character (c1)
 function chooseEnemy(c1) {
+    $("#combat-Text-One").empty();
+        $("#combat-Text-Two").empty();
     enemyChar = c1;
     c1.inPlay = true;
     moveChar(c1);
@@ -144,48 +145,78 @@ function chooseEnemy(c1) {
 }
 
 // fight function 
-function fight() {    
-    enemyChar.hP = enemyChar.hP - yourChar.aP;  
+function fight() {
+    
+    enemyChar.hP = enemyChar.hP - yourChar.aP;
     if (enemyChar.hP <= 0) {
         victory();
-    }  
-    else{
-        yourChar.hP = yourChar.hP - enemyChar.cAP;
+        yourChar.aP = yourChar.aP + yourChar.iAp;
     }
-    
-    console.log("You did " + yourChar.aP + " damage to " + enemyChar.name);
-    console.log(enemyChar.name + " did " + enemyChar.cAP + " damage to you.");
-    yourChar.aP = yourChar.aP + yourChar.iAp;
-    //update defender zone text
-   // $("#defender-zone")
-    console.log(yourChar.hP);
-    console.log(enemyChar.hP);
-    $("."+yourChar.image).find(".hp-box").text("HP = "+yourChar.hP)
-    $("."+enemyChar.image).find(".hp-box").text("HP = "+enemyChar.hP);
+    else {
+        yourChar.hP = yourChar.hP - enemyChar.cAP;
+        console.log("You did " + yourChar.aP + " damage to " + enemyChar.name);
+        console.log(enemyChar.name + " did " + enemyChar.cAP + " damage to you.");
+        $("#combat-Text-One").text("You did " + yourChar.aP + " damage to " + enemyChar.name);
+        $("#combat-Text-Two").text(enemyChar.name + " did " + enemyChar.cAP + " damage to you.");
+        yourChar.aP = yourChar.aP + yourChar.iAp;
+        //update defender zone text
+        // $("#defender-zone")
+        console.log(yourChar.hP);
+        console.log(enemyChar.hP);
+        
+        $("." + enemyChar.image).find(".hp-box").text("HP = " + enemyChar.hP);
+    }
+    $("." + yourChar.image).find(".hp-box").text("HP = " + yourChar.hP)
+
     if (yourChar.hP <= 0) {
         gameOver();
     }
-    
+
 }
 function gameOver() {
     //display lossText
     //add restart button
     console.log("you lose");
-    phase=0;
-    reset();
+    $("#combat-Text-One").text("You lose. Press restart to try again!");
+    
+    phase = 0;
+    //reset();
+    addRestart();
 }
 function victory() {
 
-    $("#defender-Box-Area").empty();
-    if (numCharRemaining <= 0) {
-        //display game win text
-        console.log("you win!");
+
+    console.log("numCharRemaining = " + numCharRemaining);
+    
+    if (numCharRemaining > 0) {
+        
+        //display round win text
+        //chooseChar();
+        $("#defender-Box-Area").empty();
+        console.log("you defeated " + enemyChar.name + "! Choose new Opponent.")
+        $("#combat-Text-One").text("you defeated " + enemyChar.name + "! Choose new Opponent.");
+        $("#combat-Text-Two").empty();
+        phase = 1;
+        
         //add restart button
     }
     else {
-        //display round win text
-        //chooseChar();
-        console.log("you defeated " + enemyChar.name + "! Choose new Opponent.")
-        phase = 1;
+        //display game win text
+        $("#combat-Text-One").text("You Win! Hit Restart to start over.");
+        $("#combat-Text-Two").empty();
+        $("#defender-Box-Area").empty();
+        //reset();
+        addRestart();
     }
+}
+function addRestart(){
+    var restartButton = $("<button>");
+    restartButton.addClass("restart-button");
+    restartButton.text("Restart");
+    $("#restart-Button-Zone").append(restartButton);
+    $(".restart-button").click(function(){
+        console.log("reset");
+        reset();
+    })
+
 }

@@ -1,11 +1,11 @@
 body{
     font-size: 30px;
-    background-image: "../img/luke.jpg";
+    background-image: url("../img/background.jpg");
     margin-left:20px;
 }
 h1{
     text-align:right;
-    
+    margin-right:10%;
 }
 #fight-Button{
     width:50px;
@@ -14,8 +14,7 @@ h1{
     margin-bottom:10px;
 }
 #placeholder-Zone{
-    float:left;
-    
+    float:left;   
 }
 #your-Character-Zone{
    float:left;
@@ -54,7 +53,14 @@ h1{
     color:white;
     border: 2px solid green; 
 }
-
+#combat-Text-One{
+    font-size: 16px;
+    display:block;
+}
+#combat-Text-Two{
+    font-size: 16px;
+    display:block;
+}
 /* character class block    */
 .luke{
     float: left;
@@ -63,7 +69,7 @@ h1{
     height:80px;
 }
 .obi-wan{
-    /*background-image: '../../img/obi-wan.jpg';*/
+    
     float: left;
     background-color: blue;
     width:100px;
@@ -90,8 +96,15 @@ h1{
     font-size: 12px;
     text-align: center;
 }
+.picture-box{
+    margin-left:10px;
+}
 
 @media only screen and (max-width: 620px) {
     
-    
+    #enemy-Character-Zone{
+        float: left;
+        width:100%;
+        height:auto;
+    }
 }
