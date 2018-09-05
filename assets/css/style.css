@@ -1,0 +1,53 @@
+body{
+    font-size: 30px;
+    background-image: "../img/luke.jpg";
+}
+h1{
+    text-align:right;
+    
+}
+#fight-Button{
+    width:50px;
+    height:20px;
+    padding:0;
+    margin-bottom:10px;
+}
+#your-Character-Zone{
+    display: inline-block;
+}
+#enemy-Character-Zone{
+    display: inline-block;
+}
+#fight-Zone{
+    display: inline-block;
+}
+#defender-Zone{
+    display: inline-block;
+}
+
+/* character class block    */
+.luke{
+    float:left;
+    background-color: green;
+    width:100px;
+    height:80px;
+}
+.obi-wan{
+    /*background-image: '../../img/obi-wan.jpg';*/
+    float:left;
+    background-color: blue;
+    width:100px;
+    height:80px;
+}
+.maul{
+    float:left;
+    background-color: black;
+    width:100px;
+    height:80px;
+}
+.sidious{
+    float:left;
+    background-color: red;
+    width:100px;
+    height:80px;
+}
