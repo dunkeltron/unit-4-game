@@ -12,17 +12,38 @@ h1{
     padding:0;
     margin-bottom:10px;
 }
+#placeholder-zone{
+    display: block;
+    height:100px;
+}
 #your-Character-Zone{
-    display: inline-block;
+    display: block;
 }
 #enemy-Character-Zone{
-    display: inline-block;
+    display: block;
 }
 #fight-Zone{
-    display: inline-block;
+    display: block;
 }
 #defender-Zone{
-    display: inline-block;
+    display: block;
+}
+#selection-Zone{    
+    background-color:white;
+    border:2px solid green;
+}
+#player-Zone{
+    background-color:white;
+    border:2px solid green;
+}
+#available-Zone{
+    background-color: red;
+    border: 2px solid black;
+}
+#enemy-zone{
+    background-color: black;
+    color:white;
+    border: 2px solid green; 
 }
 
 /* character class block    */
