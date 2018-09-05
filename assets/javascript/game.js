@@ -37,7 +37,7 @@ $(document).ready(function () {
         characterArray.forEach(function (element) {
             var newBox = $("<div>");
             newBox.addClass(element.image);
-            newBox.innerHtml("<img src=../img/"+element.image+".jpg");
+            //newBox.innerHtml("<img src=../img/"+element.image+".jpg");
             newBox.attr('id',"selection-Zone");
             $("#placeholder-Zone").append(newBox);
         });
