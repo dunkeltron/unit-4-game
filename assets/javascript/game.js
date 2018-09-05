@@ -11,34 +11,35 @@ var phase = 0;
 $(document).ready(function () {
 
 
-    obiWan = { name: "Obi-Wan Kenobi", hP: 120, iAp: 8, aP: 8, cAP: 12,inPlay:false, image: "obi-wan" };
-    darthMaul = { name: "Darth Maul", hP: 180, iAp: 4, aP: 4, cAP: 25, inPlay:false,image: "maul" };
-    darthSidious = { name: "Darth Sidious", hP: 150, iAp: 6, aP: 6, cAP: 20, inPlay:false,image: "sidious" };
-    lukeSkywalker = { name: "Luke Skywalker", hP: 100, iAp: 100, aP: 100, cAP: 5, inPlay:false,image: "luke" };
+    obiWan = { name: "Obi-Wan Kenobi", hP: 120, iAp: 8, aP: 8, cAP: 12, inPlay: false, image: "obi-wan" };
+    darthMaul = { name: "Darth Maul", hP: 180, iAp: 4, aP: 4, cAP: 25, inPlay: false, image: "maul" };
+    darthSidious = { name: "Darth Sidious", hP: 150, iAp: 6, aP: 6, cAP: 20, inPlay: false, image: "sidious" };
+    lukeSkywalker = { name: "Luke Skywalker", hP: 100, iAp: 100, aP: 100, cAP: 5, inPlay: false, image: "luke" };
     characterArray = [obiWan, darthMaul, darthSidious, lukeSkywalker];
     numCharRemaining = characterArray.length;
     imgSrc = '<img src=assets/img/' + lukeSkywalker.image + '.jpg>';
-    // function addImages(){
-    //     characterArray.forEach(function(element){
-    //         imgSrc="/assets/img/"+element.image+".jpg";
-    //        // element.setAttribute("src","../img/"+element.image+".jpg");
-    //         $("#enemy-Character-Box-Area").prepend('<img>',{id:element.image,src:imgSrc});
-    //         var elementToAdd= document.createElement(element.image);
-    //         elementToAdd.setAttribute
-    //         $("#enemy-Character-Box-Area").append(elementToAdd);
-    //         console.log(element.image);
-    //         console.log(imgSrc);
-    //     });
-
-    // }
-    //addImages();
+  
     function availableChoices() {
 
         characterArray.forEach(function (element) {
             var newBox = $("<div>");
+            var nameBox = $("<div>");
+            var picBox=$("<div>");
+            var hpBox= $("<div>");
+            nameBox.text(element.name);
+            nameBox.addClass("name-box");
+            
+            picBox.html("<img src=../img/"+element.image+".jpg");
+            picBox.addClass("picture-box");
+
+            hpBox.text("HP = "+element.hP);
+            hpBox.addClass("hp-box");
             newBox.addClass(element.image);
             //newBox.innerHtml("<img src=../img/"+element.image+".jpg");
-            newBox.attr('id',"selection-Zone");
+            newBox.attr('id', "selection-Zone");
+            newBox.append(nameBox);            
+            newBox.append(picBox);
+            newBox.append(hpBox);
             $("#placeholder-Zone").append(newBox);
         });
     }
@@ -98,28 +99,28 @@ function reset() {
 function moveChar(c1) {
     var charClass = c1.image;
     if (phase === 0) {
-        $("."+charClass).attr('id',"player-Zone");
+        $("." + charClass).attr('id', "player-Zone");
         $("." + charClass).appendTo("#your-Character-Box");
     }
     if (phase === 1) {
-        $("."+charClass).attr('id',"enemy-Zone");
+        $("." + charClass).attr('id', "enemy-Zone");
         $("." + charClass).appendTo("#defender-Box-Area");
     }
 }
-function moveRemainder(){
-    characterArray.forEach(function(element){
-        if(!element.inPlay){
+function moveRemainder() {
+    characterArray.forEach(function (element) {
+        if (!element.inPlay) {
             var charClass = element.image;
             console.log(element.name + " is inPlay:" + element.inPlay);
-            $("."+charClass).attr('id',"available-Zone");
+            $("." + charClass).attr('id', "available-Zone");
             $("." + charClass).appendTo("#enemy-Character-Box-Area");
         }
     })
 }
 //sets yourChar to chosen char(c1)
 function chooseChar(c1) {
-    yourChar = c1;    
-    c1.inPlay=true;
+    yourChar = c1;
+    c1.inPlay = true;
     moveChar(c1);
     phase = 1;
     numCharRemaining = numCharRemaining - 1;
@@ -132,8 +133,8 @@ function chooseChar(c1) {
 // }
 //sets enemyChar to chosen character (c1)
 function chooseEnemy(c1) {
-    enemyChar = c1;    
-    c1.inPlay=true; 
+    enemyChar = c1;
+    c1.inPlay = true;
     moveChar(c1);
     phase = 2;
     numCharRemaining = numCharRemaining - 1;
@@ -151,6 +152,8 @@ function fight() {
     yourChar.aP = yourChar.aP + yourChar.iAp;
     console.log(yourChar.hP);
     console.log(enemyChar.hP);
+    $("."+yourChar.image).find(".hp-box").text("HP = "+yourChar.hP)
+    $("."+enemyChar.image).find(".hp-box").text("HP = "+enemyChar.hP);
     if (yourChar.hP <= 0) {
         gameOver();
     }
@@ -166,7 +169,7 @@ function gameOver() {
     reset();
 }
 function victory() {
-    
+
     $("#defender-Box-Area").empty();
     if (numCharRemaining <= 0) {
         //display game win text
